@@ -1,12 +1,13 @@
 import { farcasterFrame } from "@farcaster/frame-wagmi-connector";
 import { http, createConfig } from "wagmi";
-import { zora } from "wagmi/chains";
+import { zora, base, baseSepolia } from "wagmi/chains";
 
 export const config = createConfig({
-  chains: [zora],
+  chains: [baseSepolia],
   connectors: [farcasterFrame()],
   transports: {
-    [zora.id]: http(),
+    //[zora.id]: http(),
+    [baseSepolia.id]: http(),
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Creator {
   address: string;
@@ -27,22 +27,43 @@ function CreatorsList({ onSelect }: CreatorsListProps) {
       .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div>Loading creators...</div>;
+  if (loading) {
+    return (
+      <div className="card">
+        <div className="loading">Loading creators</div>
+      </div>
+    );
+  }
 
   return (
     <div className="card">
-      <h2>Creators</h2>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <h2>🎬 Live Creators</h2>
+      <p style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem' }}>
+        Choose a creator to join their exclusive livestream
+      </p>
+      <div className="creators-list">
         {creators.map(c => (
-          <li key={c.address} style={{ marginBottom: 16, borderBottom: "1px solid #333", paddingBottom: 8 }}>
-            <div><strong>Address:</strong> {c.address}</div>
-            <div><strong>Token:</strong> {c.tokenAddress}</div>
-            <button className="button" style={{ marginTop: 8 }} onClick={() => onSelect(c.address)}>View Stream</button>
-          </li>
+          <div key={c.address} className="creator-item">
+            <div style={{ marginBottom: '0.75rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Creator Address:</strong>
+            </div>
+            <div className="creator-address">{c.address}</div>
+            <div style={{ marginBottom: '0.5rem', marginTop: '1rem' }}>
+              <strong style={{ color: 'rgba(255, 255, 255, 0.9)' }}>Token Contract:</strong>
+            </div>
+            <div className="creator-address">{c.tokenAddress}</div>
+            <button 
+              className="button" 
+              style={{ marginTop: '1rem', width: '100%' }} 
+              onClick={() => onSelect(c.address)}
+            >
+              🚀 Join Stream
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
 
-export default CreatorsList; 
+export default CreatorsList;

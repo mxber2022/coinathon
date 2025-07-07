@@ -1,5 +1,9 @@
 {
     "0x2B40bcF3D4D0832DddA9f30E450E024D0932560A": {
         "tokenAddress": "0xDd9F4c24e70379dCbf3f72Fabda8cFe9DE17dbad"
+    },
+
+    "0x98692B795D1fB6072de084728f7cC6d56100b807": {
+        "tokenAddress": "0xDd9F4c24e70379dCbf3f72Fabda8cFe9DE17dbad"
     }
 }

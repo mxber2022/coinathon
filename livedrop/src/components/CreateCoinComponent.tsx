@@ -28,9 +28,9 @@ function CreateCoinComponent() {
     setSubmitted(true);
     try {
       const coinParams: CreateCoinArgs = {
-        name: form.name! ,
+        name: form.name!,
         symbol: form.symbol!,
-        uri:  "ipfs://bafybeigoxzqzbnxsn35vq7lls3ljxdcwjafxvbvkivprsodzrptpiguysy", // cast for ValidMetadataURI
+        uri: "ipfs://bafybeigoxzqzbnxsn35vq7lls3ljxdcwjafxvbvkivprsodzrptpiguysy",
         payoutRecipient: connectedAddress as Address,
         platformReferrer: "0x0000000000000000000000000000000000000000" as Address,
       };
@@ -46,7 +46,6 @@ function CreateCoinComponent() {
   const { data: writeConfig } = useSimulateContract(callParams ?? {});
   const { writeContract, status } = useWriteContract(writeConfig as any);
 
-  // Automate writeContract after ready
   const hasWritten = useRef(false);
   useEffect(() => {
     if (ready && writeContract && !hasWritten.current) {
@@ -63,58 +62,101 @@ function CreateCoinComponent() {
   return (
     <div>
       {!ready && (
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <input
-            name="name"
-            placeholder="Coin Name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            name="symbol"
-            placeholder="Symbol"
-            value={form.symbol}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            name="uri"
-            placeholder="Metadata URI (ipfs://...)"
-            value={form.uri}
-            onChange={handleChange}
-            required
-            className="input"
-          />
-          <input
-            name="platformReferrer"
-            placeholder="Platform Referrer (optional)"
-            value={form.platformReferrer}
-            onChange={handleChange}
-            className="input"
-          />
-          <button className="button" type="submit" disabled={!connectedAddress || submitted}>
-            {submitted ? "Preparing..." : "Prepare Coin Creation"}
-          </button>
-          {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
-        </form>
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚀</div>
+            <h3>Create Your Stream Token</h3>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              Set up your exclusive token for stream access
+            </p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="form-container">
+            <div className="form-group">
+              <label className="form-label">Token Name</label>
+              <input
+                name="name"
+                placeholder="e.g., Jane's Stream Token"
+                value={form.name}
+                onChange={handleChange}
+                required
+                className="input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Symbol</label>
+              <input
+                name="symbol"
+                placeholder="e.g., JST"
+                value={form.symbol}
+                onChange={handleChange}
+                required
+                className="input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Metadata URI</label>
+              <input
+                name="uri"
+                placeholder="ipfs://..."
+                value={form.uri}
+                onChange={handleChange}
+                required
+                className="input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Platform Referrer (Optional)</label>
+              <input
+                name="platformReferrer"
+                placeholder="0x..."
+                value={form.platformReferrer}
+                onChange={handleChange}
+                className="input"
+              />
+            </div>
+            
+            <button 
+              className="button" 
+              type="submit" 
+              disabled={!connectedAddress || submitted}
+              style={{ width: '100%' }}
+            >
+              {submitted ? "🔄 Preparing..." : "🎯 Prepare Token Creation"}
+            </button>
+            
+            {error && (
+              <div className="feedback error">
+                ❌ {error}
+              </div>
+            )}
+          </form>
+        </div>
       )}
+      
       {ready && (
-        <>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏳</div>
           <button
             className="button"
             disabled
-            style={{ marginTop: 16 }}
+            style={{ width: '100%', marginBottom: '1rem' }}
           >
-            {status === 'pending' ? 'Creating...' : 'Create Coin'}
+            {status === 'pending' ? '🔄 Creating Token...' : '🎯 Create Token'}
           </button>
-          {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
-        </>
+          
+          {error && (
+            <div className="feedback error">
+              ❌ {error}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
 }
 
-export default CreateCoinComponent; 
+export default CreateCoinComponent;

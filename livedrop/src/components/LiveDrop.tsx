@@ -116,7 +116,7 @@ function LiveDrop({ creatorAddress, onBack }: LiveDropProps) {
           className={`button${activeTab === 'likes' ? '' : ' outline'}`}
           onClick={() => setActiveTab('likes')}
         >
-          ❤️ Likes
+          🖤 Likes
         </button>
         <button
           className={`button${activeTab === 'profile' ? '' : ' outline'}`}
@@ -130,7 +130,7 @@ function LiveDrop({ creatorAddress, onBack }: LiveDropProps) {
       {activeTab === 'stream' && <TokenGatedContent userAddress={address as Address} />}
       {activeTab === 'likes' && (
         <div className="card" style={{ textAlign: "center" }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>❤️</div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🖤</div>
           <h2>Show Some Love!</h2>
           <p style={{ color: 'rgba(255, 255, 255, 0.7)', marginBottom: '2rem' }}>
             Support this creator by liking their stream
@@ -146,7 +146,7 @@ function LiveDrop({ creatorAddress, onBack }: LiveDropProps) {
             }}
             disabled={liked}
           >
-            {liked ? "✅ Liked!" : "❤️ Like Stream"}
+            {liked ? "✅ Liked!" : "🖤 Like Stream"}
           </button>
           <div style={{ 
             fontSize: '1.25rem', 
@@ -155,7 +155,7 @@ function LiveDrop({ creatorAddress, onBack }: LiveDropProps) {
             padding: '1rem',
             borderRadius: '12px'
           }}>
-            💖 {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
+            🖤 {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateCoinComponent from "./CreateCoinComponent";
 
 interface GoLiveSectionProps {
@@ -6,11 +6,41 @@ interface GoLiveSectionProps {
 }
 
 function GoLiveSection({ address }: GoLiveSectionProps) {
+  const [hasToken, setHasToken] = useState<boolean | null>(null);
+  const [tokenAddress, setTokenAddress] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
   const [streamTitle, setStreamTitle] = useState("");
   const [streamDescription, setStreamDescription] = useState("");
   const [category, setCategory] = useState("art");
   const [showCreateToken, setShowCreateToken] = useState(false);
+
+  // Check if user has deployed a stream token
+  useEffect(() => {
+    const checkTokenStatus = async () => {
+      try {
+        const response = await fetch("/config.json");
+        const config = await response.json();
+        
+        if (config[address]) {
+          setHasToken(true);
+          setTokenAddress(config[address].tokenAddress);
+        } else {
+          setHasToken(false);
+          setTokenAddress(null);
+        }
+      } catch (error) {
+        console.error("Error checking token status:", error);
+        setHasToken(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (address) {
+      checkTokenStatus();
+    }
+  }, [address]);
 
   const categories = [
     { value: "art", label: "🎨 Digital Art", color: "from-purple-500 to-pink-500" },
@@ -33,30 +63,40 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
     setStreamDescription("");
   };
 
-  if (showCreateToken) {
+  // Loading state
+  if (loading) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 pt-8 pb-32">
-        <div className="flex items-center gap-4 mb-6">
-          <button 
-            onClick={() => setShowCreateToken(false)}
-            className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
-          >
-            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h1 className="text-2xl font-bold text-white">Create Stream Token</h1>
+      <div className="max-w-2xl mx-auto pt-8 pb-32">
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto mb-6"></div>
+            <h3 className="text-xl font-semibold text-white mb-2">Checking Token Status</h3>
+            <p className="text-white/60 text-sm">Verifying your stream token...</p>
+          </div>
         </div>
-        <CreateCoinComponent />
       </div>
     );
   }
 
+  // No token deployed - show create token prompt
+  if (!hasToken) {
+    return (
+      <div className="min-h-screen overflow-y-auto pt-4 pb-32 bg-black">
+        <div className="max-w-md w-full mx-auto px-0">
+          <CreateCoinComponent />
+        </div>
+      </div>
+    );
+  }
+
+
   if (isLive) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6 pt-8 pb-32">
+      <div className="min-h-screen overflow-y-auto pt-4 pb-32 bg-black">
+        <div className="mx-3 mb-3">
+          <div className="bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-6 space-y-6">
         {/* Live Stream Header */}
-        <div className="glass-card p-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2 bg-red-500/90 backdrop-blur-xl px-4 py-2 rounded-full">
@@ -93,7 +133,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
         </div>
 
         {/* Stream Preview */}
-        <div className="glass-card p-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Stream Preview</h3>
           <div className="aspect-video bg-gradient-to-br from-purple-900/50 to-blue-900/50 rounded-2xl flex items-center justify-center border border-white/10">
             <div className="text-center">
@@ -115,7 +155,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
             { label: 'Tokens Minted', value: '12', icon: '💎' },
             { label: 'Revenue', value: '$24', icon: '💰' },
           ].map((stat, index) => (
-            <div key={index} className="glass-card p-4 text-center">
+            <div key={index} className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
               <div className="text-2xl mb-2">{stat.icon}</div>
               <div className="text-xl font-bold text-white mb-1">{stat.value}</div>
               <div className="text-white/60 text-xs font-medium">{stat.label}</div>
@@ -124,7 +164,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
         </div>
 
         {/* Live Chat Preview */}
-        <div className="glass-card p-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
           <h3 className="text-lg font-semibold text-white mb-4">Live Chat</h3>
           <div className="space-y-3 max-h-40 overflow-y-auto">
             {[
@@ -147,12 +187,16 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
             ))}
           </div>
         </div>
+        </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6 pt-8 pb-32">
+    <div className="min-h-screen overflow-y-auto pt-4 pb-32 bg-black">
+      <div className="mx-3 mb-3">
+        <div className="bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-6 space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
         <div className="text-6xl mb-4 float-animation">📹</div>
@@ -163,7 +207,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
       </div>
 
       {/* Stream Setup Form */}
-      <div className="glass-card p-6">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h2 className="text-xl font-semibold text-white mb-6">Stream Setup</h2>
         
         <div className="space-y-6">
@@ -214,7 +258,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
       </div>
 
       {/* Stream Settings */}
-      <div className="glass-card p-6">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Stream Settings</h3>
         
         <div className="space-y-4">
@@ -251,15 +295,9 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
       </div>
 
       {/* Token Management */}
-      <div className="glass-card p-6">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-white">Stream Token</h3>
-          <button 
-            onClick={() => setShowCreateToken(true)}
-            className="text-blue-400 text-sm font-medium hover:text-blue-300 transition-colors"
-          >
-            Create New Token
-          </button>
         </div>
         
         <div className="bg-white/5 border border-white/10 rounded-xl p-4">
@@ -269,7 +307,9 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
             </div>
             <div>
               <div className="text-white font-medium">Your Stream Token</div>
-              <div className="text-white/60 text-sm">0xDd9F...dbad</div>
+              <div className="text-white/60 text-sm font-mono">
+                {tokenAddress ? `${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}` : 'Loading...'}
+              </div>
             </div>
           </div>
           
@@ -301,6 +341,8 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
           <span className="text-lg font-bold">Start Live Stream</span>
         </span>
       </button>
+      </div>
+      </div>
     </div>
   );
 }

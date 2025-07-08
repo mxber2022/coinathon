@@ -68,7 +68,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1">
         {content}
       </div>
       <BottomTabBar tab={tab} setTab={setTab} />

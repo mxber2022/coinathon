@@ -30,7 +30,7 @@ function CreateCoinComponent() {
       const coinParams: CreateCoinArgs = {
         name: form.name!,
         symbol: form.symbol!,
-        uri: form.uri || "ipfs://bafybeigoxzqzbnxsn35vq7lls3ljxdcwjafxvbvkivprsodzrptpiguysy",
+        uri: "ipfs://bafybeigoxzqzbnxsn35vq7lls3ljxdcwjafxvbvkivprsodzrptpiguysy",
         payoutRecipient: connectedAddress as Address,
         platformReferrer: "0x0000000000000000000000000000000000000000" as Address,
       };
@@ -67,7 +67,7 @@ function CreateCoinComponent() {
           <div className="text-center mb-8">
             <div className="relative inline-block mb-6 group">
               {/* Main icon container with enhanced styling */}
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-3 relative overflow-hidden">
+              <div className="w-24 h-24 bg-gradient-to-br from-black rounded-3xl flex items-center justify-center shadow-2xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-3 relative overflow-hidden">
                 {/* Animated background overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 {/* Shimmer effect */}
@@ -76,9 +76,9 @@ function CreateCoinComponent() {
               </div>
               
               {/* Enhanced badge with pulse animation */}
-              <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full flex items-center justify-center border-3 border-black shadow-xl animate-pulse">
+              {/* <div className="absolute -top-3 -right-3 w-10 h-10 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-full flex items-center justify-center border-3 border-black shadow-xl animate-pulse">
                 <span className="text-base animate-bounce">✨</span>
-              </div>
+              </div> */}
               
               {/* Floating particles */}
               <div className="absolute -top-1 -left-1 w-3 h-3 bg-blue-400 rounded-full opacity-60 animate-ping"></div>
@@ -93,7 +93,7 @@ function CreateCoinComponent() {
             
             {/* Enhanced typography */}
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-2 tracking-tight">
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent mb-2 tracking-tight">
                 Create Stream Token
               </h2>
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -102,8 +102,9 @@ function CreateCoinComponent() {
                 <div className="w-8 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
               </div>
               <p className="text-white/70 text-sm leading-relaxed max-w-xs mx-auto">
-                Deploy exclusive access tokens for your premium streams and build your creator economy
+                Deploy stream token for your premium streams and build your creator economy.
               </p>
+              <p></p>
             </div>
           
           {/* Form */}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import BuyTokenModal from "./BuyTokenModal";
 
 interface Creator {
   address: string;
@@ -9,6 +10,8 @@ function CreatorsList() {
   const [creators, setCreators] = useState<Creator[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showBuyModal, setShowBuyModal] = useState(false);
+  const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null);
 
   useEffect(() => {
     fetch("/config.json")
@@ -35,6 +38,11 @@ function CreatorsList() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleBuyToken = (creator: Creator) => {
+    setSelectedCreator(creator);
+    setShowBuyModal(true);
+  };
 
   if (loading) {
     return (
@@ -94,7 +102,7 @@ function CreatorsList() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                <span className="text-white text-xs font-semibold">{1}</span>
+                <span className="text-white text-xs font-semibold">{Math.floor(Math.random() * 500) + 100}</span>
               </div>
             </div>
 
@@ -123,12 +131,12 @@ function CreatorsList() {
                   <div className="flex items-center gap-4 text-xs text-white/70">
                     <span className="flex items-center gap-1">
                       <span>💎</span>
-                      {1} holders
+                      {Math.floor(Math.random() * 1000) + 500} holders
                     </span>
-                    {/* <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1">
                       <span>👁️</span>
-                      {1} watching
-                    </span> */}
+                      {Math.floor(Math.random() * 100) + 50} watching
+                    </span>
                   </div>
                 </div>
               </div>
@@ -140,7 +148,11 @@ function CreatorsList() {
                     <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
                     <span className="text-red-400 text-xs font-bold tracking-wider">TOKEN REQUIRED</span>
                   </div>
-                  <button className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-500/30 px-3 py-2 rounded-full hover:scale-105 transition-transform duration-300">
+                  <button 
+                    onClick={() => handleBuyToken(creator)}
+                    className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-500/30 px-3 py-2 rounded-full hover:scale-105 transition-transform duration-300 touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                     <span className="text-blue-400 text-xs font-bold tracking-wider">BUY TOKEN</span>
                   </button>
@@ -257,6 +269,19 @@ function CreatorsList() {
           </div>
         );
       })}
+      
+      {/* Buy Token Modal */}
+      {selectedCreator && (
+        <BuyTokenModal
+          isOpen={showBuyModal}
+          onClose={() => {
+            setShowBuyModal(false);
+            setSelectedCreator(null);
+          }}
+          tokenAddress={selectedCreator.tokenAddress}
+          creatorAddress={selectedCreator.address}
+        />
+      )}
     </div>
   );
 }

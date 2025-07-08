@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import { CreateCoinArgs, createCoinCall, DeployCurrency } from "@zoralabs/coins-sdk";
 import { Address } from "viem";
-import { useWriteContract, useSimulateContract, useAccount } from "wagmi";
+import { useWriteContract, useSimulateContract, useAccount, useWaitForTransactionReceipt } from "wagmi";
 
 function CreateCoinComponent() {
   const { address: connectedAddress } = useAccount();
@@ -16,6 +16,7 @@ function CreateCoinComponent() {
   const [ready, setReady] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deploymentSuccess, setDeploymentSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,7 +45,11 @@ function CreateCoinComponent() {
   };
 
   const { data: writeConfig } = useSimulateContract(callParams ?? {});
-  const { writeContract, status } = useWriteContract(writeConfig as any);
+  const { writeContract, status, data: hash } = useWriteContract(writeConfig as any);
+
+  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+    hash,
+  });
 
   const hasWritten = useRef(false);
   useEffect(() => {
@@ -59,9 +64,78 @@ function CreateCoinComponent() {
     }
   }, [ready, writeContract, callParams]);
 
+  useEffect(() => {
+    if (isConfirmed) {
+      setDeploymentSuccess(true);
+    }
+  }, [isConfirmed]);
   return (
     <div className="bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-8 w-full mx-auto">
-      {!ready && (
+      {deploymentSuccess ? (
+        <div className="text-center">
+          {/* Success Animation */}
+          <div className="relative inline-block mb-6">
+            <div className="w-24 h-24 bg-gradient-to-r rounded-3xl flex items-center justify-center shadow-2xl animate-bounce">
+              <span className="text-4xl">🎉</span>
+            </div>            
+            {/* Celebration particles */}
+            <div className="absolute -top-4 -left-4 w-3 h-3 bg-yellow-400 rounded-full animate-ping"></div>
+            <div className="absolute -bottom-3 -right-3 w-2 h-2 bg-pink-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+            <div className="absolute top-1/2 -left-6 w-1.5 h-1.5 bg-blue-400 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
+          </div>
+          
+          <h2 className="text-3xl font-bold text-gradient mb-3">Token Deployed Successfully!</h2>
+          <p className="text-white/70 text-sm mb-6 leading-relaxed">
+            Your stream token has been created and deployed to the blockchain. You can now start streaming!
+          </p>
+          
+          {/* Success Details */}
+          <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-6 mb-6">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white/70 text-sm">Token Name:</span>
+                <span className="text-white font-semibold">{form.name}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-white/70 text-sm">Symbol:</span>
+                <span className="text-white font-semibold">{form.symbol}</span>
+              </div>
+              {hash && (
+                <div className="flex items-center justify-between">
+                  <span className="text-white/70 text-sm">Transaction:</span>
+                  <span className="text-green-400 font-mono text-xs">
+                    {hash.substring(0, 6)}...{hash.substring(hash.length - 4)}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Next Steps */}
+          {/* <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-6 mb-6">
+            <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+              <span>🚀</span>
+              What's Next?
+            </h3>
+            <div className="space-y-2 text-sm text-white/70">
+              <p>• Your token is now live and ready for minting</p>
+              <p>• Set up your stream settings and go live</p>
+              <p>• Share your stream with your audience</p>
+              <p>• Start building your creator economy</p>
+            </div>
+          </div> */}
+          
+          <button 
+            onClick={() => window.location.reload()}
+            className="w-full bg-gradient-to-r  text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <span className=" border border-gray-600 rounded-2xl p-4 mb-6 ">
+              <span className="text-xl">🎬</span>
+              <span> Continue</span>
+            </span>
+          </button>
+        </div>
+      ) : !ready ? (
         <>
           {/* Header */}
           <div className="text-center mb-8">
@@ -93,7 +167,7 @@ function CreateCoinComponent() {
             
             {/* Enhanced typography */}
             <div className="space-y-3">
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-500 bg-clip-text text-transparent mb-2 tracking-tight">
+              <h2 className="text-xl  text-shadow-white font-semibold tracking-widest uppercase">
                 Create Stream Token
               </h2>
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -102,9 +176,9 @@ function CreateCoinComponent() {
                 <div className="w-8 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
               </div>
               <p className="text-white/70 text-sm leading-relaxed max-w-xs mx-auto">
-                Deploy stream token for your premium streams and build your creator economy.
+                {/* Deploy stream token for your premium streams and build your creator economy. */}
               </p>
-              <p></p>
+              <br></br>
             </div>
           
           {/* Form */}
@@ -192,16 +266,15 @@ function CreateCoinComponent() {
             )}
           </form>
         </>
-      )}
+      ) : ready && !deploymentSuccess ? (
       
-      {ready && (
         <div className="text-center">
           {/* Success Icon */}
           <div className="relative inline-block mb-6">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl">
+            <div className="w-20 h-20  rounded-2xl flex items-center justify-center shadow-2xl">
               <span className="text-3xl">⏳</span>
             </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center border-2 border-black shadow-lg">
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r rounded-full flex items-center justify-center border-2 border-black shadow-lg">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
             </div>
           </div>
@@ -211,14 +284,23 @@ function CreateCoinComponent() {
           
           {/* Status Button */}
           <button
-            className="w-full bg-white/10 backdrop-blur-xl border border-white/20 text-white font-semibold py-4 px-6 rounded-2xl opacity-75 cursor-not-allowed"
+            className={`w-full backdrop-blur-xl border text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 ${
+              isConfirming 
+                ? 'bg-blue-500/20 border-blue-500/30 opacity-75 cursor-not-allowed' 
+                : 'bg-white/10 border-white/20 opacity-75 cursor-not-allowed'
+            }`}
             disabled
           >
             <span className="flex items-center justify-center gap-3">
-              {status === 'pending' ? (
+              {isConfirming ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Processing Transaction...</span>
+                  <span>Confirming Transaction...</span>
+                </>
+              ) : status === 'pending' ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>Check Your Wallet...</span>
                 </>
               ) : (
                 <>
@@ -231,12 +313,40 @@ function CreateCoinComponent() {
           
           {/* Progress Indicator */}
           <div className="mt-6 flex justify-center">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+            <div className="flex items-center gap-3">
+              <div className={`flex items-center gap-2 ${status === 'pending' ? 'text-blue-400' : 'text-white/40'}`}>
+                <div className={`w-3 h-3 rounded-full ${status === 'pending' ? 'bg-blue-500 animate-pulse' : 'bg-white/20'}`}></div>
+                <span className="text-xs font-medium">Wallet</span>
+              </div>
+              <div className="w-8 h-px bg-white/20"></div>
+              <div className={`flex items-center gap-2 ${isConfirming ? 'text-purple-400' : 'text-white/40'}`}>
+                <div className={`w-3 h-3 rounded-full ${isConfirming ? 'bg-purple-500 animate-pulse' : 'bg-white/20'}`}></div>
+                <span className="text-xs font-medium">Blockchain</span>
+              </div>
+              <div className="w-8 h-px bg-white/20"></div>
+              <div className={`flex items-center gap-2 ${isConfirmed ? 'text-green-400' : 'text-white/40'}`}>
+                <div className={`w-3 h-3 rounded-full ${isConfirmed ? 'bg-green-500' : 'bg-white/20'}`}></div>
+                <span className="text-xs font-medium">Complete</span>
+              </div>
             </div>
           </div>
+          
+          {/* Transaction Hash */}
+          {hash && (
+            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-blue-400 text-sm">📝</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-blue-400 text-sm font-medium mb-1">Transaction Submitted</p>
+                  <p className="text-blue-300/70 text-xs font-mono break-all">
+                    {hash}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           
           {error && (
             <div className="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
@@ -251,7 +361,7 @@ function CreateCoinComponent() {
             </div>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

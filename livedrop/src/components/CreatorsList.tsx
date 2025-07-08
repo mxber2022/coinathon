@@ -154,14 +154,78 @@ function CreatorsList() {
             {/* Side Actions */}
             <div className="absolute right-4 bottom-44 z-20 flex flex-col gap-3">
               {[
-                { icon: '❤️', count: `${Math.floor(Math.random() * 100) + 20}k` },
-                { icon: '💬', count: `${Math.floor(Math.random() * 50) + 10}k` },
-                { icon: '📤', label: 'Share' },
-                { icon: '🔖', label: 'Save' }
+                { 
+                  icon: (
+                    <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  ),
+                  name: 'Like',
+                  color: 'text-red-400',
+                  bgColor: 'bg-red-500/10',
+                  borderColor: 'border-red-500/20',
+                  hoverColor: 'hover:bg-red-500/20',
+                  activeScale: 'active:scale-95'
+                },
+                { 
+                  icon: (
+                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  ),
+                  name: 'Comment',
+                  color: 'text-blue-400',
+                  bgColor: 'bg-blue-500/10',
+                  borderColor: 'border-blue-500/20',
+                  hoverColor: 'hover:bg-blue-500/20',
+                  activeScale: 'active:scale-95'
+                },
+                { 
+                  icon: (
+                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                    </svg>
+                  ),
+                  name: 'Share',
+                  color: 'text-green-400',
+                  bgColor: 'bg-green-500/10',
+                  borderColor: 'border-green-500/20',
+                  hoverColor: 'hover:bg-green-500/20',
+                  activeScale: 'active:scale-95'
+                },
+                { 
+                  icon: (
+                    <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    </svg>
+                  ),
+                  name: 'Save',
+                  color: 'text-yellow-400',
+                  bgColor: 'bg-yellow-500/10',
+                  borderColor: 'border-yellow-500/20',
+                  hoverColor: 'hover:bg-yellow-500/20',
+                  activeScale: 'active:scale-95'
+                }
               ].map((action, i) => (
-                <button key={i} className="w-14 h-14 bg-black/60 backdrop-blur-xl rounded-full border border-white/20 flex flex-col items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg">
-                  <span className="text-xl mb-1">{action.icon}</span>
-                  <span className="text-xs font-semibold leading-none">{'count' in action ? action.count : action.label}</span>
+                <button 
+                  key={i} 
+                  className={`relative w-14 h-14 ${action.bgColor} ${action.borderColor} backdrop-blur-xl rounded-2xl border flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-90 shadow-xl ${action.hoverColor} group overflow-hidden touch-manipulation`}
+                  aria-label={action.name}
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                  {/* Ripple effect */}
+                  <div className="absolute inset-0 bg-white/20 rounded-2xl scale-0 group-active:scale-150 transition-transform duration-200 ease-out"></div>
+                  
+                  {/* Icon */}
+                  <div className={`${action.color} transition-all duration-300 group-hover:scale-110 group-active:scale-85 relative z-10`}>
+                    {action.icon}
+                  </div>
+                  
+                  {/* Glow effect on hover */}
+                  <div className={`absolute inset-0 ${action.bgColor} rounded-2xl opacity-0 group-hover:opacity-50 group-active:opacity-70 transition-opacity duration-300 blur-sm`}></div>
+                  
+                  {/* Touch feedback overlay */}
+                  <div className="absolute inset-0 bg-white/5 rounded-2xl opacity-0 group-active:opacity-100 transition-opacity duration-100"></div>
                 </button>
               ))}
             </div>

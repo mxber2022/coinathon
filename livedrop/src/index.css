@@ -2,6 +2,7 @@
 @import "tailwindcss";
 
 
+
 @layer base {
   * {
     @apply antialiased;
@@ -35,7 +36,7 @@
   }
   
   .glass-input {
-    @apply bg-white/5 backdrop-blur-xl border-2 border-white/20 rounded-2xl px-4 py-3 text-white placeholder-white/60 focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20 transition-all duration-300 outline-none;
+    @apply bg-white/5 backdrop-blur-xl border-2 border-white/20 rounded-2xl px-4 py-3 text-white placeholder-white/60 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 outline-none;
   }
   
   .premium-gradient {
@@ -94,6 +95,36 @@
   .tab-ripple:active::before {
     width: 300px;
     height: 300px;
+  }
+  
+  /* Enhanced mobile touch effects */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Mobile-specific active states */
+  @media (hover: none) and (pointer: coarse) {
+    .group:active .group-active\:scale-150 {
+      transform: scale(1.5);
+    }
+    
+    .group:active .group-active\:scale-85 {
+      transform: scale(0.85);
+    }
+    
+    .group:active .group-active\:opacity-70 {
+      opacity: 0.7;
+    }
+    
+    .group:active .group-active\:opacity-100 {
+      opacity: 1;
+    }
   }
 }
 

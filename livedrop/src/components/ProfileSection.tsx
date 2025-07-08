@@ -4,10 +4,10 @@ interface ProfileSectionProps {
 
 function ProfileSection({ address }: ProfileSectionProps) {
   const stats = [
-    { label: 'Tokens Owned', value: '3', icon: '💎' },
-    { label: 'Streams Watched', value: '12', icon: '🎥' },
-    { label: 'Creators Followed', value: '8', icon: '👥' },
-    { label: 'Rewards Earned', value: '24', icon: '🏆' },
+    { label: 'Tokens Owned', value: '1', icon: '💎' },
+    { label: 'Streams Watched', value: '3', icon: '🎥' },
+    { label: 'Creators Followed', value: '1', icon: '👥' },
+    { label: 'Rewards Earned', value: '0', icon: '🏆' },
   ];
 
   return (
@@ -19,9 +19,9 @@ function ProfileSection({ address }: ProfileSectionProps) {
             <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-3xl shadow-xl">
               👤
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
+            {/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-            </div>
+            </div> */}
           </div>
           
           <div className="flex-1">

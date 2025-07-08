@@ -1,3 +1,4 @@
+
 interface ProfileSectionProps {
   address: string;
 }
@@ -16,7 +17,7 @@ function ProfileSection({ address }: ProfileSectionProps) {
       <div className="glass-card p-6">
         <div className="flex items-center gap-6">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-3xl shadow-xl">
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-black rounded-full flex items-center justify-center text-3xl shadow-xl">
               👤
             </div>
             {/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
@@ -25,7 +26,7 @@ function ProfileSection({ address }: ProfileSectionProps) {
           </div>
           
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-white mb-1">Your Profile</h1>
+            <h1 className="text-2xl font-bold text-white mb-1">Hello </h1>
             <p className="text-white/60 text-sm mb-3">Premium member since joining</p>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-full px-3 py-1">

@@ -34,7 +34,7 @@ function App() {
     );
   } else if (tab === 'live') {
     content = address ? (
-      <div className="flex-1 p-4 safe-top">
+      <div className="flex-1 safe-top">
         <GoLiveSection address={address} />
       </div>
     ) : (

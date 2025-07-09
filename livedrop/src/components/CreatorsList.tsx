@@ -56,10 +56,28 @@ function CreatorsList() {
     );
   }
 
+  const creatorImages = [
+    "https://sapphire-following-turkey-778.mypinata.cloud/ipfs/bafybeihlqtpiaxzq4ddtmtzd7pugbawsyfbmaqutfes3tg424mzq2syyxq",
+    "https://sapphire-following-turkey-778.mypinata.cloud/ipfs/bafybeihzi5krdximzkd6dhbdsn6abhno2qtbazwqhnn4s5rt76cfuuf3fy",
+    "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop"
+  ];
+
   return (
     <div className="h-screen overflow-y-auto scrollbar-hide snap-y snap-mandatory">
+      {/* Hero Banner */}
+      <div className="relative w-full h-48 md:h-64 mb-6">
+        <img
+          src="https://sapphire-following-turkey-778.mypinata.cloud/ipfs/bafybeihzi5krdximzkd6dhbdsn6abhno2qtbazwqhnn4s5rt76cfuuf3fy"
+          alt="LiveDrop Hero"
+          className="w-full h-full object-cover object-center rounded-b-3xl shadow-lg"
+        />
+        <div className="absolute inset-0 bg-black/40 rounded-b-3xl flex items-center justify-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">Welcome to LiveDrop</h1>
+        </div>
+      </div>
       {creators.map((creator, index) => {
         const isActive = index === currentIndex;
+        const imageUrl = creatorImages[index % creatorImages.length];
         const creatorTypes = ['🎨 Digital Artist', '🎵 Music Producer', '🎮 Game Developer'];
         const creatorBios = [
           'Creating immersive digital art experiences in real-time',
@@ -77,7 +95,7 @@ function CreatorsList() {
             {/* Background */}
             <div className="absolute inset-0">
               <img
-                src={`https://images.pexels.com/photos/${774909 + index}/pexels-photo-${774909 + index}.jpeg?auto=compress&cs=tinysrgb&w=400&h=800&fit=crop`}
+                src={imageUrl}
                 alt="Creator background"
                 className="w-full h-full object-cover"
               />
@@ -102,7 +120,7 @@ function CreatorsList() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                 </svg>
-                <span className="text-white text-xs font-semibold">{Math.floor(Math.random() * 500) + 100}</span>
+                <span className="text-white text-xs font-semibold">{1}</span>
               </div>
             </div>
 
@@ -112,13 +130,13 @@ function CreatorsList() {
               <div className="flex items-start gap-4 mb-6">
                 <div className="relative">
                   <img
-                    src={`https://images.pexels.com/photos/${774909 + index}/pexels-photo-${774909 + index}.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop`}
+                    src={imageUrl}
                     alt="Creator"
                     className="w-16 h-16 rounded-full border-3 border-white/30 shadow-xl"
                   />
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
+                  {/* <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <div className="flex-1 min-w-0">
@@ -131,12 +149,12 @@ function CreatorsList() {
                   <div className="flex items-center gap-4 text-xs text-white/70">
                     <span className="flex items-center gap-1">
                       <span>💎</span>
-                      {Math.floor(Math.random() * 1000) + 500} holders
+                      {Math.floor(1)} holders
                     </span>
-                    <span className="flex items-center gap-1">
+                    {/* <span className="flex items-center gap-1">
                       <span>👁️</span>
-                      {Math.floor(Math.random() * 100) + 50} watching
-                    </span>
+                      {Math.floor(1)} watching
+                    </span> */}
                   </div>
                 </div>
               </div>

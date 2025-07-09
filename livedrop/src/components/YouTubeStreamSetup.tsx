@@ -57,7 +57,7 @@ function YouTubeStreamSetup({ tokenAddress, onStreamStart }: YouTubeStreamSetupP
         privacy,
         startTime: new Date().toISOString(),
         viewerCount: 0,
-        tokenHolders: 24,
+        tokenHolders: 1,
         duration: "0m",
       };
 
@@ -214,7 +214,7 @@ function YouTubeStreamSetup({ tokenAddress, onStreamStart }: YouTubeStreamSetupP
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-white text-sm font-bold">24</div>
+                <div className="text-white text-sm font-bold">1</div>
                 <div className="text-white/50 text-xs">holders</div>
               </div>
             </div>

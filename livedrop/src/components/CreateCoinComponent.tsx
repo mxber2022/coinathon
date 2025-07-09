@@ -70,7 +70,7 @@ function CreateCoinComponent() {
     }
   }, [isConfirmed]);
   return (
-    <div className="bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-8 w-full mx-auto">
+    <div className="bg-black/60 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-8  w-full mx-auto">
       {deploymentSuccess ? (
         <div className="text-center">
           {/* Success Animation */}

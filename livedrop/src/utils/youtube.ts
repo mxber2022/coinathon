@@ -237,7 +237,7 @@ export class YouTubeStreamManager {
         privacy: settings.privacy as any,
         startTime: new Date().toISOString(),
         viewerCount: 0,
-        tokenHolders: 24,
+        tokenHolders: 1,
         duration: '0m'
       };
 

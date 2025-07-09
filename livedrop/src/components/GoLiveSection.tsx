@@ -72,7 +72,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
   // No token deployed
   if (!hasToken) {
     return (
-      <div className="px-4 pb-32">
+      <div className="px-4 pb-32 pt-4">
         <CreateCoinComponent />
       </div>
     );
@@ -104,7 +104,7 @@ function GoLiveSection({ address }: GoLiveSectionProps) {
           
           <div className="flex items-center gap-4 text-sm text-white/70">
             <span>👁️ {streamData.viewerCount || 0}</span>
-            <span>💎 {streamData.tokenHolders || 24}</span>
+            <span>💎 {streamData.tokenHolders || 1}</span>
           </div>
         </div>
 
